@@ -1,0 +1,133 @@
+// Copyright 314CC Miron Andreea Cristiana
+
+Programarea Calculatoarelor si limbaje de programare 2
+
+Tema #1
+Momente disperate
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+	Stocarea datelor se va realiza in "vectorul generic" arr, unde numarul
+de elemente stocate este reprezentat de variabila len.
+	Citirea comenzilor se realizeaza prin citirea unei intregi linii, in
+command, ce are alocata 258 octeti(256 numarul maxim de caractere + '\n' + 
+'\0'). Se elimina '\n' din sirul command si se extrage primul cuvant, ce 
+reprezinta comanda propriu-zisa. In functie de aceasta, se vor extrage anumite
+informatii si prelucrari:
+
+	1) exit: se dezaloca memoria si programul se opreste
+	
+	2) insert: se creeaza structura data prin apelarea functie stock, ce
+realizeaza parsarea argumentelor, se apeleaza functia add_last si se dezaloca 
+memoria structurii create
+
+	3) insert_at: se creeaza structura data prin apelarea functie stock, ce
+realizeaza parsarea argumentelor, se apeleaza functia add_at si se dezaloca 
+memoria structurii create
+
+	4) delete_at: se extrage indexul si se apeleaza functia delete_at
+
+ 	5) find: se extrage indexul si se apeleaza functia find
+
+	6) print: se apeleaza functia print
+
+	Funnctia stock creeaza o structura data de tip data_structure*, unde 
+are loc parsarea argumentelor. Se aloca memorie pentru data (declarata 
+data_structure*) si header-ul datelor(data->header). Parsarea se realizeaza 
+cu functia strtok. Se extrag argumentele astfel:
+	-argument #1: tipul de date stocate si se salveaza data->header->type
+	-argument #2: dedicator si se aloca memorie si se salveaza in variabila
+		      char* give_money
+	-argument #3: prima suma si se salveaza in varibila int sum1
+	-argument #4: a doua suma si se salveaza in variabila int sum2
+	-argument #5: dedicatul si se aloca memorie si se salveaza in varibila
+		      char* get_money
+	Pentru ultimele 4 argumente, s-a adaugat lungimea lor in 
+data->header->len. 
+	Acum ca este cunoscuta lungimea datelor, se aloca memorie pentru 
+datele efective si se copiaza in data->data. Se va folosi o varibila poz pentru
+a retine pozitia de salvare a datei de adaugat. In functie de tipul datelor,
+sumele vor ocupa un anumit numar de octeti.
+	Se dezaloca memoria pentru cele 2 siruri, give_money si get_money si se
+returneaza data.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+	Functia add_last
+
+	Se va retine in variabila poz pozitia de inserare a elementului, acesta
+fiind initializat cu lungimea vectorului generic, prin apelarea la functia 
+length. 
+	Functia length primeste un vector generic si numarul de elemente si 
+returneaza lugimea(numarul de octeti) din vector.
+	Se realoca memorie pentru vectorul generic, iar in cazul in care nu s-a
+putut realiza alocarea, se va intoarce o eroare.
+	Se copiaza header-ul si datele din structura data_structure cu ajutorul
+functiei memcpy, urmand ca numarul de elemente din vectorul generic sa se 
+incremeneteze.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+	Functia add_at
+
+	Se realoca memorie pentru vectorul generic, iar in cazul in care 
+realocarea a esuat, se va intoarce eroare.
+	Daca indexul este mai mare decat numarul de elemente, atunci aceasta
+va retine numarul de elemente.
+	Se parcurge vectorul generic pana cand varibila poz va avea valoarea
+pozitiei elementului de adaugat.
+	Pentru a elibera spatiu pentru noul element, se va retine in variabila
+l_move lungimea datelor ce trebuiesc mutate si in l_elem lungimea vectorului
+de adaugat. Intr-un vector temporar salvam datele(cei l_move octeti) ce vor fi 
+mutate cu l_elem pozitii, la pozitia poz+l_elem in vectorul generic.
+	Dupa mutare, se copiaza header-ul si datele elementului de adaugat
+la pozitia poz. 
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+	Functia delete_at
+
+	Asemanatoare functiei add_at, poz va fi initializat cu pozitia in 
+vectorul generic a elementului de sters, l_elem reprezinta lungimea elementului
+de sters, iar l_move lungimea datelor ce vor fi mutate.
+	In vectorul temporar temp se copiaza elementele ce vor fi mutate( cei
+l_move octeti), iar continutul lui temp se va copia la pozitia poz in vectorul
+generic.
+	Lungimea vectorului generic scade si se realoca.
+	Numarule de elemente scade.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+	Functia find
+
+	Se verifica daca elementul de indexul respectiv exista, altfel nu se va
+afisa nimic.
+	Se parcurge vectorul generic pana cand poz e initializat cu pozitia
+elementului de la indexul respectic in vector.
+	Pentru printarea elementului, se apeleaza functia print_elem.
+
+	Functia print_elem printeaza un element din vectorul generic arr aflat
+la pozitia n, date ca parametru.
+	Se salveaza header-ul datelor in variabila de tip head header.
+	Variabila poz va retine pozitia in interiorul elementului.
+	Se salveaza in varibila char* give_money dedicatorul, cu ajutorul lui
+strtok pana cand intalneste primul NULL in element.
+	Pozitia de inceput celui de-al doilea sir este dat de tipul datelor
+elementului, astfel incat numele dedicatului se poate afla la 2, 4 sau 8 
+pozitii distanta fata de sfarsitul numelui dedicatorului. Numele dedicatului
+se salveaza in variabila char* get_money.
+	Se pot printa primele 2 randuri de informatii ce contin tipul, 
+dedicatorul si dedicatul, urmand doar sa se afiseze cele doua sume. 
+	Pentru sume, in functie de tipul elementului, se aloca cata memorie
+este nevoie si se copiaza datele respective. Pentru printarea lor, se apeleaza
+o functie print_sums ce realizeaza printarea lor in functie de tipul datelor.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+	Functia print	
+
+	Se parcurge vectorul generic astfel incat varibila poz sa retina 
+pozitia de la care se regaseste elementul in vectorul generic. Pentru fiecare
+element se apeleaza functia print_elem, ce va realiza afisarea lui.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
